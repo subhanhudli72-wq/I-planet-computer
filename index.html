@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I planet computer</title>
+
+  <style>
+    :root {
+      --bg: #f7f0e6;
+      --surface: #fffaf3;
+      --brown: #8b5e3c;
+      --dark-brown: #4a3020;
+      --accent: #c58b5a;
+      --border: #dfcdbb;
+      --text: #35271e;
+      --muted: #78695d;
+      --white: #ffffff;
+      --danger: #a94442;
+      --shadow: 0 8px 25px rgba(74, 48, 32, 0.10);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--dark-brown);
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1150px, 92%);
+      margin: auto;
+    }
+
+    /* =========================
+       NAVBAR
+    ========================== */
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255, 250, 243, 0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--brown);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-family: Georgia, serif;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .brand-text h2 {
+      font-size: 23px;
+      line-height: 1.1;
+    }
+
+    .brand-text small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .cart-button {
+      position: relative;
+      border: none;
+      background: var(--brown);
+      color: white;
+      padding: 13px 20px;
+      border-radius: 14px;
+      font-weight: bold;
+      transition: 0.25s;
+    }
+
+    .cart-button:hover {
+      background: var(--dark-brown);
+      transform: translateY(-2px);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -7px;
+      min-width: 24px;
+      height: 24px;
+      padding: 0 6px;
+      border-radius: 50px;
+      background: var(--accent);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-size: 12px;
+      border: 2px solid var(--surface);
+    }
+
+    /* =========================
+       PAGES
+    ========================== */
+
+    .page {
+      min-height: calc(100vh - 160px);
+      padding: 35px 0 60px;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero {
+      background:
+        linear-gradient(
+          120deg,
+          rgba(74, 48, 32, 0.96),
+          rgba(139, 94, 60, 0.90)
+        );
+      color: white;
+      border-radius: 26px;
+      padding: 55px 45px;
+      margin-bottom: 35px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "PC";
+      position: absolute;
+      right: -30px;
+      bottom: -70px;
+      font-family: Georgia, serif;
+      font-size: 250px;
+      font-weight: bold;
+      opacity: 0.06;
+    }
+
+    .hero-content {
+      max-width: 680px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      color: white;
+      font-size: clamp(38px, 7vw, 65px);
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #f5e8dc;
+      font-size: 18px;
+      max-width: 600px;
+      margin-bottom: 25px;
+    }
+
+    .hero-button {
+      display: inline-block;
+      background: #fffaf3;
+      color: var(--dark-brown);
+      padding: 13px 22px;
+      border-radius: 12px;
+      font-weight: bold;
+      transition: 0.25s;
+    }
+
+    .hero-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,.15);
+    }
+
+    /* =========================
+       OWNER SECTION
+    ========================== */
+
+    .owner-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 25px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      box-shadow: var(--shadow);
+    }
+
+    .owner-photo {
+      width: 120px;
+      height: 120px;
+      flex: 0 0 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #ead8c5;
+      background: #ead8c5;
+    }
+
+    .owner-placeholder {
+      width: 120px;
+      height: 120px;
+      flex: 0 0 120px;
+      border-radius: 50%;
+      background: #ead8c5;
+      color: var(--brown);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 15px;
+      font-family: Georgia, serif;
+      font-size: 13px;
+      border: 5px solid #f0e3d5;
+    }
+
+    .owner-info h2 {
+      margin-bottom: 5px;
+    }
+
+    .owner-info p {
+      color: var(--muted);
+    }
+
+    .owner-info .owner-role {
+      color: var(--brown);
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    /* =========================
+       FILTERS
+    ========================== */
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .section-heading h2 {
+      font-size: 30px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-bottom: 25px;
+    }
+
+    .filter-button {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--dark-brown);
+      padding: 9px 16px;
+      border-radius: 50px;
+      transition: 0.2s;
+    }
+
+    .filter-button:hover,
+    .filter-button.active {
+      background: var(--brown);
+      color: white;
+      border-color: var(--brown);
+    }
+
+    /* =========================
+       PRODUCT GRID
+    ========================== */
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(74,48,32,.05);
+      transition: transform .25s, box-shadow .25s;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 205px;
+      object-fit: cover;
+      background: #eadccc;
+      display: block;
+    }
+
+    .product-info {
+      padding: 17px;
+    }
+
+    .category-label {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    .product-info h3 {
+      font-size: 19px;
+      margin: 4px 0 7px;
+    }
+
+    .description {
+      color: var(--muted);
+      font-size: 13px;
+      min-height: 42px;
+    }
+
+    .product-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .price {
+      font-family: Georgia, serif;
+      color: var(--dark-brown);
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .add-button {
+      border: none;
+      background: var(--brown);
+      color: white;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: bold;
+      transition: .2s;
+    }
+
+    .add-button:hover {
+      background: var(--dark-brown);
+    }
+
+    .add-button.in-cart {
+      background: #607052;
+    }
+
+    .add-button:disabled {
+      background: #b8aaa0;
+      cursor: not-allowed;
+    }
+
+    /* =========================
+       PRODUCT PAGE
+    ========================== */
+
+    .back-button {
+      border: none;
+      background: transparent;
+      color: var(--brown);
+      font-weight: bold;
+      margin-bottom: 20px;
+      padding: 5px 0;
+    }
+
+    .product-detail {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 45px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .main-product-image {
+      width: 100%;
+      height: 430px;
+      object-fit: contain;
+      border-radius: 18px;
+      background: #eee1d2;
+    }
+
+    .gallery {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      overflow-x: auto;
+    }
+
+    .thumbnail {
+      width: 75px;
+      height: 75px;
+      flex: 0 0 75px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .thumbnail.active {
+      border-color: var(--brown);
+    }
+
+    .detail-category {
+      color: var(--accent);
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+
+    .product-detail h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      margin: 5px 0 10px;
+    }
+
+    .detail-price {
+      font-family: Georgia, serif;
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--brown);
+      margin: 15px 0;
+    }
+
+    .stock {
+      color: #607052;
+      font-weight: bold;
+      margin: 15px 0;
+    }
+
+    .out-stock {
+      color: var(--danger);
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      width: fit-content;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 15px 0;
+    }
+
+    .quantity-control button {
+      width: 42px;
+      height: 42px;
+      border: none;
+      background: #eee1d2;
+      color: var(--dark-brown);
+      font-size: 20px;
+    }
+
+    .quantity-control span {
+      width: 50px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .large-add {
+      width: 100%;
+      border: none;
+      background: var(--brown);
+      color: white;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: bold;
+      transition: .2s;
+    }
+
+    .large-add:hover {
+      background: var(--dark-brown);
+    }
+
+    /* =========================
+       CART
+    ========================== */
+
+    .cart-container {
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .cart-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 15px;
+      display: grid;
+      grid-template-columns: 90px 1fr auto;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .cart-item img {
+      width: 90px;
+      height: 90px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #eee1d2;
+    }
+
+    .cart-item h3 {
+      font-size: 18px;
+    }
+
+    .cart-item-price {
+      color: var(--brown);
+      font-weight: bold;
+    }
+
+    .cart-quantity {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 7px;
+    }
+
+    .cart-quantity button {
+      border: 1px solid var(--border);
+      background: #f4e9dc;
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+    }
+
+    .remove-button {
+      border: none;
+      background: transparent;
+      color: var(--danger);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .cart-summary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 25px;
+      margin-top: 20px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+    }
+
+    .summary-total {
+      border-top: 1px solid var(--border);
+      margin-top: 10px;
+      padding-top: 15px;
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .primary-button {
+      display: inline-block;
+      border: none;
+      background: var(--brown);
+      color: white;
+      padding: 13px 20px;
+      border-radius: 11px;
+      font-weight: bold;
+      transition: .2s;
+    }
+
+    .primary-button:hover {
+      background: var(--dark-brown);
+      transform: translateY(-2px);
+    }
+
+    .full-button {
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .empty {
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 60px 20px;
+      border-radius: 20px;
+    }
+
+    /* =========================
+       CHECKOUT
+    ========================== */
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      gap: 25px;
+    }
+
+    .form-box,
+    .checkout-summary {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: var(--dark-brown);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #fffdf9;
+      border-radius: 10px;
+      padding: 12px;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--brown);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 0;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    /* =========================
+       SUCCESS MESSAGE
+    ========================== */
+
+    .success-box {
+      text-align: center;
+      max-width: 600px;
+      margin: 50px auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 45px 25px;
+      box-shadow: var(--shadow);
+    }
+
+    .success-icon {
+      font-size: 55px;
+      margin-bottom: 10px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 900px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .nav-inner {
+        min-height: 68px;
+      }
+
+      .brand-text h2 {
+        font-size: 18px;
+      }
+
+      .brand-text small {
+        display: none;
+      }
+
+      .brand-logo {
+        width: 43px;
+        height: 43px;
+      }
+
+      .cart-button {
+        padding: 11px 15px;
+      }
+
+      .hero {
+        padding: 40px 25px;
+      }
+
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .product-image {
+        height: 165px;
+      }
+
+      .product-info {
+        padding: 12px;
+      }
+
+      .product-info h3 {
+        font-size: 16px;
+      }
+
+      .description {
+        font-size: 12px;
+      }
+
+      .product-bottom {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .product-detail {
+        grid-template-columns: 1fr;
+        padding: 18px;
+        gap: 25px;
+      }
+
+      .main-product-image {
+        height: 320px;
+      }
+
+      .owner-section {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .cart-item {
+        grid-template-columns: 70px 1fr;
+      }
+
+      .cart-item img {
+        width: 70px;
+        height: 70px;
+      }
+
+      .cart-item > div:last-child {
+        grid-column: 2;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .product-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .product-image {
+        height: 140px;
+      }
+
+      .price {
+        font-size: 16px;
+      }
+
+      .add-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================================
+       EASY CONFIGURATION
+       Change these values.
+  =========================================================== -->
+
+  <script>
+    const CONFIG = {
+      storeName: "I planet computer",
+      tagline: "Best computer at affordable price",
+
+      // Paste your Formspree endpoint here:
+      // Example: https://formspree.io/f/xxxxxxxx
+      formspreeURL: "YOUR_FORMSPREE_URL_HERE",
+
+      currency: "₹",
+
+      /*
+       * OWNER DETAILS
+       * Replace ownerImage with your owner's image URL.
+       *
+       * Example:
+       * ownerImage: "https://i.ibb.co/your-image.jpg"
+       *
+       * You can also use a local image:
+       * ownerImage: "owner.jpg"
+       */
+      ownerName: "Owner Name",
+      ownerRole: "Founder & Owner",
+      ownerImage: "OWNER_IMAGE_URL_HERE"
+    };
+
+
+    /* ==========================================================
+       PRODUCTS
+       Edit your products here.
+    =========================================================== */
+
+    const PRODUCTS = [
+
+      {
+        id: 1,
+        name: "Wireless Mouse",
+        price: 499,
+        category: "Accessories",
+        description: "Comfortable wireless mouse for everyday computer use.",
+        images: [
+          "https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 20
+      },
+
+      {
+        id: 2,
+        name: "Mechanical Keyboard",
+        price: 1499,
+        category: "Accessories",
+        description: "Responsive mechanical keyboard for work and gaming.",
+        images: [
+          "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 15
+      },
+
+      {
+        id: 3,
+        name: "Gaming Headset",
+        price: 1299,
+        category: "Accessories",
+        description: "Immersive audio headset with comfortable ear cushions.",
+        images: [
+          "https://images.unsplash.com/photo-1599669454699-248893623440?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 12
+      },
+
+      {
+        id: 4,
+        name: "USB Keyboard",
+        price: 699,
+        category: "Accessories",
+        description: "Reliable full-size USB keyboard for office and home.",
+        images: [
+          "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 25
+      },
+
+      {
+        id: 5,
+        name: "Computer Monitor",
+        price: 7499,
+        category: "Monitors",
+        description: "Clear and vibrant monitor suitable for work and entertainment.",
+        images: [
+          "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 8
+      },
+
+      {
+        id: 6,
+        name: "Gaming Monitor",
+        price: 11999,
+        category: "Monitors",
+        description: "High-performance monitor designed for smooth gaming.",
+        images: [
+          "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 6
+      },
+
+      {
+        id: 7,
+        name: "Laptop",
+        price: 45999,
+        category: "Laptops",
+        description: "Reliable laptop for study, business and everyday computing.",
+        images: [
+          "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 5
+      },
+
+      {
+        id: 8,
+        name: "Gaming Laptop",
+        price: 74999,
+        category: "Laptops",
+        description: "Powerful laptop for gaming, editing and demanding applications.",
+        images: [
+          "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 4
+      },
+
+      {
+        id: 9,
+        name: "8GB RAM",
+        price: 1899,
+        category: "Computer Hardware",
+        description: "8GB memory module for improving system performance.",
+        images: [
+          "https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 18
+      },
+
+      {
+        id: 10,
+        name: "16GB RAM",
+        price: 3299,
+        category: "Computer Hardware",
+        description: "16GB RAM for faster multitasking and demanding workloads.",
+        images: [
+          "https://images.unsplash.com/photo-1562976540-1502c2145186?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 14
+      },
+
+      {
+        id: 11,
+        name: "500GB SSD",
+        price: 2999,
+        category: "Storage",
+        description: "Fast SSD storage for improved boot and application loading.",
+        images: [
+          "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 10
+      },
+
+      {
+        id: 12,
+        name: "1TB SSD",
+        price: 5499,
+        category: "Storage",
+        description: "Large and fast SSD for applications, games and files.",
+        images: [
+          "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 9
+      },
+
+      {
+        id: 13,
+        name: "1TB Hard Disk",
+        price: 3799,
+        category: "Storage",
+        description: "Affordable high-capacity storage for personal and office use.",
+        images: [
+          "https://images.unsplash.com/photo-1531492746076-161ca9b1e1c6?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 11
+      },
+
+      {
+        id: 14,
+        name: "Wi-Fi Router",
+        price: 1599,
+        category: "Networking",
+        description: "Reliable wireless router for home and office networks.",
+        images: [
+          "https://images.unsplash.com/photo-1606904825846-647eb07f5be2?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 13
+      },
+
+      {
+        id: 15,
+        name: "HDMI Cable",
+        price: 299,
+        category: "Cables",
+        description: "High-quality HDMI cable for monitors, TVs and computers.",
+        images: [
+          "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=900&q=80"
+        ],
+        stock: 40
+      }
+
+    ];
+  </script>
+
+
+  <!-- ==========================================================
+       NAVBAR
+  =========================================================== -->
+
+  <nav class="navbar">
+    <div class="container nav-inner">
+
+      <div class="brand" onclick="goHome()">
+        <div class="brand-logo">IP</div>
+
+        <div class="brand-text">
+          <h2 id="navStoreName">I planet computer</h2>
+          <small id="navTagline">Best computer at affordable price</small>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="cart-button" onclick="goToCart()">
+          🛒 Cart
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- ==========================================================
+       MAIN APP
+  =========================================================== -->
+
+  <main id="app"></main>
+
+
+  <footer>
+    <div class="container">
+      © <span id="footerStoreName">I planet computer</span>. All rights reserved.
+    </div>
+  </footer>
+
+
+  <script>
+
+    /* ==========================================================
+       APPLICATION STATE
+    =========================================================== */
+
+    let cart = JSON.parse(localStorage.getItem("neo_cart")) || [];
+    let selectedQuantity = 1;
+    let selectedCategory = "All";
+
+
+    /* ==========================================================
+       INITIAL CONFIG
+    =========================================================== */
+
+    document.getElementById("navStoreName").textContent = CONFIG.storeName;
+    document.getElementById("navTagline").textContent = CONFIG.tagline;
+    document.getElementById("footerStoreName").textContent = CONFIG.storeName;
+
+
+    /* ==========================================================
+       HELPERS
+    =========================================================== */
+
+    function formatPrice(price) {
+      return CONFIG.currency + Number(price).toLocaleString("en-IN");
+    }
+
+    function saveCart() {
+      localStorage.setItem("neo_cart", JSON.stringify(cart));
+      updateCartCount();
+    }
+
+    function updateCartCount() {
+      const count = cart.reduce((total, item) => total + item.quantity, 0);
+      document.getElementById("cartCount").textContent = count;
+    }
+
+    function getProduct(id) {
+      return PRODUCTS.find(product => product.id === Number(id));
+    }
+
+    function getCartItem(id) {
+      return cart.find(item => item.id === Number(id));
+    }
+
+    function isInCart(id) {
+      return cart.some(item => item.id === Number(id));
+    }
+
+    function goHome() {
+      location.hash = "#home";
+    }
+
+    function goToCart() {
+      location.hash = "#cart";
+    }
+
+    function goToCheckout() {
+      location.hash = "#checkout";
+    }
+
+
+    /* ==========================================================
+       ADD TO CART
+    =========================================================== */
+
+    function addToCart(id, event) {
+
+      if (event) {
+        event.stopPropagation();
+      }
+
+      const product = getProduct(id);
+
+      if (!product || product.stock <= 0) {
+        return;
+      }
+
+      const existing = cart.find(item => item.id === product.id);
+
+      if (existing) {
+        if (existing.quantity < product.stock) {
+          existing.quantity++;
+        }
+      } else {
+        cart.push({
+          id: product.id,
+          quantity: 1
+        });
+      }
+
+      saveCart();
+
+      renderCurrentPage();
+    }
+
+
+    /* ==========================================================
+       PRODUCT CARD
+    =========================================================== */
+
+    function productCard(product) {
+
+      const inCart = isInCart(product.id);
+
+      return `
+        <article class="product-card"
+          onclick="openProduct(${product.id})">
+
+          <img
+            class="product-image"
+            src="${product.images[0]}"
+            alt="${escapeHTML(product.name)}"
+            loading="lazy"
+          >
+
+          <div class="product-info">
+
+            <span class="category-label">
+              ${escapeHTML(product.category)}
+            </span>
+
+            <h3>${escapeHTML(product.name)}</h3>
+
+            <p class="description">
+              ${escapeHTML(product.description)}
+            </p>
+
+            <div class="product-bottom">
+
+              <span class="price">
+                ${formatPrice(product.price)}
+              </span>
+
+              <button
+                class="add-button ${inCart ? "in-cart" : ""}"
+                ${product.stock <= 0 ? "disabled" : ""}
+                onclick="addToCart(${product.id}, event)"
+              >
+                ${
+                  product.stock <= 0
+                  ? "Out of Stock"
+                  : inCart
+                    ? "In Cart ✓"
+                    : "Add to Cart"
+                }
+              </button>
+
+            </div>
+
+          </div>
+        </article>
+      `;
+    }
+
+
+    /* ==========================================================
+       HOME PAGE
+    =========================================================== */
+
+    function renderHome() {
+
+      const categories = [
+        "All",
+        ...new Set(PRODUCTS.map(product => product.category))
+      ];
+
+      const filteredProducts =
+        selectedCategory === "All"
+          ? PRODUCTS
+          : PRODUCTS.filter(
+              product => product.category === selectedCategory
+            );
+
+      return `
+        <section class="page">
+          <div class="container">
+
+            <section class="hero">
+
+              <div class="hero-content">
+
+                <h1>${escapeHTML(CONFIG.storeName)}</h1>
+
+                <p>
+                  ${escapeHTML(CONFIG.tagline)}.
+                  Find quality computers, hardware and accessories
+                  for your home, office and gaming needs.
+                </p>
+
+                <a href="#products" class="hero-button">
+                  Shop Products →
+                </a>
+
+              </div>
+
+            </section>
+
+
+            <!-- OWNER PHOTO SECTION -->
+
+            <section class="owner-section">
+
+              ${
+                CONFIG.ownerImage &&
+                CONFIG.ownerImage !== "OWNER_IMAGE_URL_HERE"
+                ?
+                `
+                  <img
+                    src="${CONFIG.ownerImage}"
+                    alt="${escapeHTML(CONFIG.ownerName)}"
+                    class="owner-photo"
+                  >
+                `
+                :
+                `
+                  <div class="owner-placeholder">
+                    Owner<br>Photo
+                  </div>
+                `
+              }
+
+              <div class="owner-info">
+
+                <div class="owner-role">
+                  ${escapeHTML(CONFIG.ownerRole)}
+                </div>
+
+                <h2>
+                  ${escapeHTML(CONFIG.ownerName)}
+                </h2>
+
+                <p>
+                  Welcome to ${escapeHTML(CONFIG.storeName)}.
+                  We are committed to providing quality computer
+                  products at affordable prices.
+                </p>
+
+              </div>
+
+            </section>
+
+
+            <section id="products">
+
+              <div class="section-heading">
+                <h2>Our Products</h2>
+              </div>
+
+              <div class="filters">
+
+                ${categories.map(category => `
+                  <button
+                    class="filter-button ${
+                      selectedCategory === category ? "active" : ""
+                    }"
+                    onclick="filterProducts('${escapeHTML(category)}')"
+                  >
+                    ${escapeHTML(category)}
+                  </button>
+                `).join("")}
+
+              </div>
+
+              <div class="product-grid">
+
+                ${
+                  filteredProducts.length
+                    ? filteredProducts.map(productCard).join("")
+                    : `
+                      <div class="empty">
+                        <h2>No products found</h2>
+                      </div>
+                    `
+                }
+
+              </div>
+
+            </section>
+
+          </div>
+        </section>
+      `;
+    }
+
+
+    function filterProducts(category) {
+      selectedCategory = category;
+      renderCurrentPage();
+
+      setTimeout(() => {
+        document
+          .getElementById("products")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }, 50);
+    }
+
+
+    /* ==========================================================
+       PRODUCT PAGE
+    =========================================================== */
+
+    function openProduct(id) {
+      location.hash = "#product/" + id;
+    }
+
+    function renderProduct(id) {
+
+      const product = getProduct(id);
+
+      if (!product) {
+        return `
+          <section class="page">
+            <div class="container empty">
+              <h2>Product not found</h2>
+              <br>
+              <button class="primary-button" onclick="goHome()">
+                Back Home
+              </button>
+            </div>
+          </section>
+        `;
+      }
+
+      selectedQuantity = 1;
+
+      const related = PRODUCTS
+        .filter(
+          p => p.category === product.category &&
+               p.id !== product.id
+        )
+        .slice(0, 4);
+
+      return `
+        <section class="page">
+          <div class="container">
+
+            <button class="back-button" onclick="goHome()">
+              ← Back to Products
+            </button>
+
+            <div class="product-detail">
+
+              <div>
+
+                <img
+                  id="mainProductImage"
+                  class="main-product-image"
+                  src="${product.images[0]}"
+                  alt="${escapeHTML(product.name)}"
+                >
+
+                <div class="gallery">
+
+                  ${product.images.map((image, index) => `
+                    <img
+                      class="thumbnail ${index === 0 ? "active" : ""}"
+                      src="${image}"
+                      alt="${escapeHTML(product.name)}"
+                      onclick="changeMainImage(this, '${image}')"
+                    >
+                  `).join("")}
+
+                </div>
+
+              </div>
+
+
+              <div>
+
+                <span class="detail-category">
+                  ${escapeHTML(product.category)}
+                </span>
+
+                <h1>${escapeHTML(product.name)}</h1>
+
+                <div class="detail-price">
+                  ${formatPrice(product.price)}
+                </div>
+
+                <p>
+                  ${escapeHTML(product.description)}
+                </p>
+
+                ${
+                  product.stock > 0
+                    ?
+                    `<div class="stock">
+                      ✓ ${product.stock} items available
+                    </div>`
+                    :
+                    `<div class="stock out-stock">
+                      ✕ Out of stock
+                    </div>`
+                }
+
+
+                ${
+                  product.stock > 0
+                  ?
+                  `
+                    <strong>Quantity</strong>
+
+                    <div class="quantity-control">
+
+                      <button onclick="changeProductQuantity(-1)">
+                        −
+                      </button>
+
+                      <span id="productQuantity">
+                        1
+                      </span>
+
+                      <button onclick="changeProductQuantity(1)">
+                        +
+                      </button>
+
+                    </div>
+
+                    <button
+                      class="large-add"
+                      onclick="addProductFromDetail(${product.id})"
+                    >
+                      Add ${selectedQuantity > 1 ? selectedQuantity : ""} to Cart
+                    </button>
+                  `
+                  :
+                  `
+                    <button class="large-add" disabled>
+                      Out of Stock
+                    </button>
+                  `
+                }
+
+              </div>
+
+            </div>
+
+
+            ${
+              related.length
+              ?
+              `
+                <section style="margin-top:45px">
+
+                  <div class="section-heading">
+                    <h2>Related Products</h2>
+                  </div>
+
+                  <div class="product-grid">
+                    ${related.map(productCard).join("")}
+                  </div>
+
+                </section>
+              `
+              : ""
+            }
+
+          </div>
+        </section>
+      `;
+    }
+
+
+    function changeMainImage(element, image) {
+
+      const main = document.getElementById("mainProductImage");
+
+      if (main) {
+        main.src = image;
+      }
+
+      document
+        .querySelectorAll(".thumbnail")
+        .forEach(img => img.classList.remove("active"));
+
+      element.classList.add("active");
+    }
+
+
+    function changeProductQuantity(amount) {
+
+      const hashParts = location.hash.split("/");
+      const product = getProduct(hashParts[1]);
+
+      if (!product) return;
+
+      selectedQuantity += amount;
+
+      if (selectedQuantity < 1) {
+        selectedQuantity = 1;
+      }
+
+      if (selectedQuantity > product.stock) {
+        selectedQuantity = product.stock;
+      }
+
+      const quantityElement =
+        document.getElementById("productQuantity");
+
+      if (quantityElement) {
+        quantityElement.textContent = selectedQuantity;
+      }
+    }
+
+
+    function addProductFromDetail(id) {
+
+      const product = getProduct(id);
+
+      if (!product) return;
+
+      const existing = cart.find(item => item.id === id);
+
+      if (existing) {
+
+        existing.quantity = Math.min(
+          existing.quantity + selectedQuantity,
+          product.stock
+        );
+
+      } else {
+
+        cart.push({
+          id: id,
+          quantity: selectedQuantity
+        });
+
+      }
+
+      saveCart();
+
+      alert("Product added to cart ✓");
+
+      renderCurrentPage();
+    }
+
+
+    /* ==========================================================
+       CART PAGE
+    =========================================================== */
+
+    function renderCart() {
+
+      if (!cart.length) {
+
+        return `
+          <section class="page">
+
+            <div class="container">
+
+              <div class="empty">
+
+                <h2>Your cart is empty</h2>
+
+                <p style="margin:10px 0 20px">
+                  Add some computer products to your cart.
+                </p>
+
+                <button
+                  class="primary-button"
+                  onclick="goHome()"
+                >
+                  Continue Shopping
+                </button>
+
+              </div>
+
+            </div>
+
+          </section>
+        `;
+      }
+
+
+      let subtotal = 0;
+
+      const itemsHTML = cart.map(item => {
+
+        const product = getProduct(item.id);
+
+        if (!product) return "";
+
+        const itemTotal = product.price * item.quantity;
+
+        subtotal += itemTotal;
+
+        return `
+          <div class="cart-item">
+
+            <img
+              src="${product.images[0]}"
+              alt="${escapeHTML(product.name)}"
+            >
+
+            <div>
+
+              <h3>${escapeHTML(product.name)}</h3>
+
+              <div class="cart-item-price">
+                ${formatPrice(product.price)}
+              </div>
+
+              <div class="cart-quantity">
+
+                <button
+                  onclick="changeCartQuantity(${product.id}, -1)"
+                >
+                  −
+                </button>
+
+                <strong>${item.quantity}</strong>
+
+                <button
+                  onclick="changeCartQuantity(${product.id}, 1)"
+                >
+                  +
+                </button>
+
+              </div>
+
+              <button
+                class="remove-button"
+                onclick="removeFromCart(${product.id})"
+              >
+                Remove
+              </button>
+
+            </div>
+
+            <strong>
+              ${formatPrice(itemTotal)}
+            </strong>
+
+          </div>
+        `;
+
+      }).join("");
+
+
+      return `
+        <section class="page">
+
+          <div class="container cart-container">
+
+            <div class="section-heading">
+              <h2>Your Cart</h2>
+            </div>
+
+            ${itemsHTML}
+
+            <div class="cart-summary">
+
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <strong>${formatPrice(subtotal)}</strong>
+              </div>
+
+              <div class="summary-row">
+                <span>Delivery</span>
+                <strong>₹40</strong>
+              </div>
+
+              <div class="summary-row summary-total">
+                <span>Total</span>
+                <span>${formatPrice(subtotal + 40)}</span>
+              </div>
+
+              <button
+                class="primary-button full-button"
+                onclick="goToCheckout()"
+              >
+                Proceed to Checkout
+              </button>
+
+            </div>
+
+          </div>
+
+        </section>
+      `;
+    }
+
+
+    function changeCartQuantity(id, amount) {
+
+      const item = cart.find(item => item.id === id);
+      const product = getProduct(id);
+
+      if (!item || !product) return;
+
+      item.quantity += amount;
+
+      if (item.quantity <= 0) {
+        cart = cart.filter(item => item.id !== id);
+      }
+
+      if (item.quantity > product.stock) {
+        item.quantity = product.stock;
+      }
+
+      saveCart();
+      renderCurrentPage();
+    }
+
+
+    function removeFromCart(id) {
+
+      cart = cart.filter(item => item.id !== id);
+
+      saveCart();
+      renderCurrentPage();
+    }
+
+
+    /* ==========================================================
+       CHECKOUT PAGE
+    =========================================================== */
+
+    function renderCheckout() {
+
+      if (!cart.length) {
+
+        return `
+          <section class="page">
+
+            <div class="container empty">
+
+              <h2>Your cart is empty</h2>
+
+              <button
+                class="primary-button"
+                onclick="goHome()"
+                style="margin-top:20px"
+              >
+                Shop Now
+              </button>
+
+            </div>
+
+          </section>
+        `;
+      }
+
+
+      let subtotal = 0;
+
+      const summary = cart.map(item => {
+
+        const product = getProduct(item.id);
+
+        if (!product) return "";
+
+        subtotal += product.price * item.quantity;
+
+        return `
+          <div class="summary-row">
+
+            <span>
+              ${escapeHTML(product.name)}
+              × ${item.quantity}
+            </span>
+
+            <strong>
+              ${formatPrice(product.price * item.quantity)}
+            </strong>
+
+          </div>
+        `;
+
+      }).join("");
+
+
+      return `
+        <section class="page">
+
+          <div class="container">
+
+            <button
+              class="back-button"
+              onclick="goToCart()"
+            >
+              ← Back to Cart
+            </button>
+
+            <div class="checkout-grid">
+
+              <div class="form-box">
+
+                <h2>Checkout</h2>
+
+                <p style="color:var(--muted); margin:5px 0 25px">
+                  Enter your details to place your order.
+                </p>
+
+                <form id="checkoutForm"
+                  onsubmit="submitOrder(event)">
+
+                  <div class="form-group">
+
+                    <label for="name">
+                      Name *
+                    </label>
+
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      placeholder="Your full name"
+                    >
+
+                  </div>
+
+
+                  <div class="form-group">
+
+                    <label for="email">
+                      Email *
+                    </label>
+
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="you@example.com"
+                    >
+
+                  </div>
+
+
+                  <div class="form-group">
+
+                    <label for="phone">
+                      Phone *
+                    </label>
+
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      required
+                      placeholder="Your phone number"
+                    >
+
+                  </div>
+
+
+                  <div class="form-group">
+
+                    <label for="address">
+                      Address *
+                    </label>
+
+                    <textarea
+                      id="address"
+                      name="address"
+                      required
+                      placeholder="Delivery address"
+                    ></textarea>
+
+                  </div>
+
+
+                  <div class="form-group">
+
+                    <label for="notes">
+                      Notes
+                    </label>
+
+                    <textarea
+                      id="notes"
+                      name="notes"
+                      placeholder="Any additional instructions?"
+                    ></textarea>
+
+                  </div>
+
+
+                  <button
+                    type="submit"
+                    class="primary-button full-button"
+                  >
+                    Place Order
+                  </button>
+
+                </form>
+
+              </div>
+
+
+              <div class="checkout-summary">
+
+                <h2>Order Summary</h2>
+
+                <div style="margin-top:15px">
+                  ${summary}
+                </div>
+
+                <div class="summary-row">
+                  <span>Delivery</span>
+                  <strong>₹40</strong>
+                </div>
+
+                <div class="summary-row summary-total">
+                  <span>Total</span>
+                  <span>${formatPrice(subtotal + 40)}</span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+      `;
+    }
+
+
+    /* ==========================================================
+       SEND ORDER TO FORMSPREE
+    =========================================================== */
+
+    async function submitOrder(event) {
+
+      event.preventDefault();
+
+      if (!cart.length) {
+        alert("Your cart is empty.");
+        return;
+      }
+
+      if (
+        !CONFIG.formspreeURL ||
+        CONFIG.formspreeURL === "YOUR_FORMSPREE_URL_HERE"
+      ) {
+        alert(
+          "Please add your Formspree URL in the CONFIG section at the top of the HTML file."
+        );
+        return;
+      }
+
+
+      const form = event.target;
+
+      const formData = new FormData(form);
+
+      let subtotal = 0;
+
+      const orderItems = cart.map(item => {
+
+        const product = getProduct(item.id);
+
+        if (!product) return null;
+
+        const total = product.price * item.quantity;
+
+        subtotal += total;
+
+        return {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          quantity: item.quantity,
+          total: total
+        };
+
+      }).filter(Boolean);
+
+
+      const orderData = {
+
+        store: CONFIG.storeName,
+
+        customer: {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          address: formData.get("address"),
+          notes: formData.get("notes")
+        },
+
+        items: orderItems,
+
+        deliveryCharge: 40,
+
+        subtotal: subtotal,
+
+        total: subtotal + 40
+
+      };
+
+
+      const submitButton =
+        form.querySelector("button[type='submit']");
+
+      submitButton.disabled = true;
+      submitButton.textContent = "Sending Order...";
+
+
+      try {
+
+        const response = await fetch(
+          CONFIG.formspreeURL,
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+
+            body: JSON.stringify(orderData)
+          }
+        );
+
+
+        if (!response.ok) {
+          throw new Error("Order submission failed.");
+        }
+
+
+        cart = [];
+
+        saveCart();
+
+
+        document.getElementById("app").innerHTML = `
+
+          <section class="page">
+
+            <div class="container">
+
+              <div class="success-box">
+
+                <div class="success-icon">
+                  ✅
+                </div>
+
+                <h2>Order Placed Successfully!</h2>
+
+                <p style="margin-top:10px">
+                  Thank you for ordering from
+                  <strong>${escapeHTML(CONFIG.storeName)}</strong>.
+                </p>
+
+                <p style="color:var(--muted); margin-top:8px">
+                  You will be redirected to the home page in
+                  <strong>3 seconds</strong>.
+                </p>
+
+              </div>
+
+            </div>
+
+          </section>
+
+        `;
+
+
+        setTimeout(() => {
+          location.hash = "#home";
+        }, 3000);
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        submitButton.disabled = false;
+        submitButton.textContent = "Place Order";
+
+        alert(
+          "Sorry, the order could not be submitted. Please check your Formspree URL and internet connection."
+        );
+
+      }
+
+    }
+
+
+    /* ==========================================================
+       HASH ROUTER
+    =========================================================== */
+
+    function renderCurrentPage() {
+
+      const hash = location.hash || "#home";
+
+      let html = "";
+
+
+      if (hash === "#home" || hash === "#products") {
+
+        html = renderHome();
+
+      }
+
+      else if (hash.startsWith("#product/")) {
+
+        const id = hash.split("/")[1];
+
+        html = renderProduct(id);
+
+      }
+
+      else if (hash === "#cart") {
+
+        html = renderCart();
+
+      }
+
+      else if (hash === "#checkout") {
+
+        html = renderCheckout();
+
+      }
+
+      else {
+
+        html = renderHome();
+
+      }
+
+
+      document.getElementById("app").innerHTML = html;
+
+      updateCartCount();
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+
+    window.addEventListener("hashchange", renderCurrentPage);
+
+
+    /* ==========================================================
+       SECURITY HELPER
+    =========================================================== */
+
+    function escapeHTML(value) {
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* ==========================================================
+       START APPLICATION
+    =========================================================== */
+
+    updateCartCount();
+    renderCurrentPage();
+
+  </script>
+
+</body>
+</html>
